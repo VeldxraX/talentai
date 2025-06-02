@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
@@ -6,14 +6,43 @@ import './Report.css'
 
 interface PremiumReportData {
   scores: {
-    intelligences: { [key: string]: number }
-    holland: { [key: string]: number }
+    dimensions: { [key: string]: number }
+    archetype: {
+      name: string
+      description: string
+      traits?: string[]
+    }
+    holland: {
+      primary: string
+      secondary: string
+      scores: { [key: string]: number }
+    }
+    mbti: {
+      type: string
+      traits: {
+        EI: string
+        SN: string
+        TF: string
+        JP: string
+      }
+    }
+    futureBuckets: string[]
   }
-  dominantIntelligence: string
-  dominantHollandType: string
   careerRecommendations: string[]
-  aiLearningPaths: string[]
+  personalizedLearningPaths: string[]
   completedAt: string
+  insights: {
+    topStrengths: Array<{
+      dimension: string
+      score: number
+      description: string
+    }>
+    developmentAreas: Array<{
+      dimension: string
+      score: number
+      suggestion: string
+    }>
+  }
 }
 
 function PremiumReport() {
@@ -31,7 +60,12 @@ function PremiumReport() {
 
   const loadPremiumReport = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/report/premium/${resultId}`)
+      const token = localStorage.getItem('talentai_token')
+      const response = await axios.get(`http://localhost:5000/api/report/premium/${resultId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       setReportData(response.data)
       setLoading(false)
     } catch (error) {
@@ -40,8 +74,8 @@ function PremiumReport() {
     }
   }
 
-  const formatIntelligenceName = (intelligence: string) => {
-    return intelligence
+  const formatDimensionName = (dimension: string) => {
+    return dimension
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
@@ -51,18 +85,38 @@ function PremiumReport() {
     return type.charAt(0).toUpperCase() + type.slice(1)
   }
 
-  const getIntelligenceIcon = (intelligence: string) => {
+  const getDimensionIcon = (dimension: string) => {
     const icons: { [key: string]: string } = {
-      bodily_kinesthetic: '🏃‍♂️',
-      logical_mathematical: '🧮',
-      musical: '🎵',
-      interpersonal: '👥',
-      intrapersonal: '🧘‍♀️',
-      spatial: '🎨',
-      linguistic: '📚',
-      naturalistic: '🌿'
+      analytical: '🧠',
+      creative_visual: '🎨',
+      empathetic: '❤️',
+      physical: '🏃‍♂️',
+      verbal: '💬',
+      systematic: '📋',
+      future_forward: '🔮',
+      independent: '🚀'
     }
-    return icons[intelligence] || '🧠'
+    return icons[dimension] || '⭐'
+  }
+
+  const getArchetypeIcon = (archetypeName: string) => {
+    const icons: { [key: string]: string } = {
+      'The Strategist': '🧠',
+      'The Innovator': '💡',
+      'The Facilitator': '🤝',
+      'The Builder': '🔨',
+      'The Researcher': '🔬',
+      'The Communicator': '💬',
+      'The Analyst': '📊',
+      'The Creator': '🎨',
+      'The Helper': '❤️',
+      'The Maker': '🛠️',
+      'The Organizer': '📋',
+      'The Visionary': '🔮',
+      'The Pioneer': '🚀',
+      'The Balanced Learner': '⚖️'
+    }
+    return icons[archetypeName] || '🌟'
   }
 
   const getHollandIcon = (type: string) => {
@@ -75,6 +129,16 @@ function PremiumReport() {
       conventional: '📊'
     }
     return icons[type] || '💭'
+  }
+
+  const getMBTIColor = (trait: string) => {
+    const colors: { [key: string]: string } = {
+      'E': '#FF6B6B', 'I': '#4ECDC4',
+      'S': '#45B7D1', 'N': '#96CEB4',
+      'T': '#FECA57', 'F': '#FF9FF3',
+      'J': '#54A0FF', 'P': '#5F27CD'
+    }
+    return colors[trait] || '#666'
   }
 
   if (loading) {
@@ -94,14 +158,14 @@ function PremiumReport() {
   }
 
   // Prepare data for radar chart
-  const intelligenceData = Object.entries(reportData.scores.intelligences).map(([key, value]) => ({
-    intelligence: formatIntelligenceName(key),
+  const dimensionData = Object.entries(reportData.scores.dimensions).map(([key, value]) => ({
+    dimension: formatDimensionName(key),
     score: value,
-    fullMark: 15 // Max possible score for 3 questions * 5 points
+    fullMark: 100
   }))
 
   // Prepare data for Holland types bar chart
-  const hollandData = Object.entries(reportData.scores.holland).map(([key, value]) => ({
+  const hollandData = Object.entries(reportData.scores.holland.scores).map(([key, value]) => ({
     type: formatHollandName(key),
     score: value
   }))
@@ -127,39 +191,54 @@ function PremiumReport() {
           <section className="summary-section">
             <h2>Executive Summary</h2>
             <div className="summary-cards">
-              <div className="summary-card dominant">
+              <div className="summary-card archetype">
                 <div className="card-icon">
-                  {getIntelligenceIcon(reportData.dominantIntelligence)}
+                  {getArchetypeIcon(reportData.scores.archetype.name)}
                 </div>
-                <h3>Dominant Intelligence</h3>
-                <p>{formatIntelligenceName(reportData.dominantIntelligence)}</p>
+                <h3>Your Archetype</h3>
+                <p>{reportData.scores.archetype.name}</p>
+                <span className="archetype-description">{reportData.scores.archetype.description}</span>
               </div>
               
               <div className="summary-card holland">
                 <div className="card-icon">
-                  {getHollandIcon(reportData.dominantHollandType)}
+                  {getHollandIcon(reportData.scores.holland.primary)}
                 </div>
                 <h3>Career Type</h3>
-                <p>{formatHollandName(reportData.dominantHollandType)}</p>
+                <p>{formatHollandName(reportData.scores.holland.primary)}</p>
+                <span className="secondary-type">Secondary: {formatHollandName(reportData.scores.holland.secondary)}</span>
+              </div>
+
+              <div className="summary-card mbti">
+                <div className="card-icon">🧬</div>
+                <h3>MBTI Teaser</h3>
+                <p>{reportData.scores.mbti.type}</p>
+                <div className="mbti-traits">
+                  {Object.entries(reportData.scores.mbti.traits).map(([key, value]) => (
+                    <span key={key} className="mbti-trait" style={{ backgroundColor: getMBTIColor(value) }}>
+                      {value}
+                    </span>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
 
-          {/* Multiple Intelligences Radar Chart */}
+          {/* Dimensional Analysis Radar Chart */}
           <section className="chart-section">
-            <h2>Multiple Intelligences Profile</h2>
+            <h2>8-Dimensional Profile</h2>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={400}>
-                <RadarChart data={intelligenceData}>
+                <RadarChart data={dimensionData}>
                   <PolarGrid />
-                  <PolarAngleAxis dataKey="intelligence" tick={{ fontSize: 12 }} />
+                  <PolarAngleAxis dataKey="dimension" tick={{ fontSize: 12 }} />
                   <PolarRadiusAxis 
                     angle={90} 
-                    domain={[0, 15]} 
+                    domain={[0, 100]} 
                     tick={{ fontSize: 10 }}
                   />
                   <Radar
-                    name="Intelligence Score"
+                    name="Dimension Score"
                     dataKey="score"
                     stroke="#8884d8"
                     fill="#8884d8"
@@ -170,18 +249,18 @@ function PremiumReport() {
               </ResponsiveContainer>
             </div>
             
-            <div className="intelligence-breakdown">
-              <h3>Intelligence Breakdown</h3>
-              <div className="intelligence-grid">
-                {Object.entries(reportData.scores.intelligences).map(([key, value]) => (
-                  <div key={key} className="intelligence-item">
-                    <span className="intelligence-icon">{getIntelligenceIcon(key)}</span>
-                    <span className="intelligence-name">{formatIntelligenceName(key)}</span>
-                    <span className="intelligence-score">{value}/15</span>
+            <div className="dimension-breakdown">
+              <h3>Dimensional Breakdown</h3>
+              <div className="dimension-grid">
+                {Object.entries(reportData.scores.dimensions).map(([key, value]) => (
+                  <div key={key} className="dimension-item">
+                    <span className="dimension-icon">{getDimensionIcon(key)}</span>
+                    <span className="dimension-name">{formatDimensionName(key)}</span>
+                    <span className="dimension-score">{value}%</span>
                     <div className="score-bar">
                       <div 
                         className="score-fill" 
-                        style={{ width: `${(value / 15) * 100}%` }}
+                        style={{ width: `${value}%` }}
                       />
                     </div>
                   </div>
@@ -190,9 +269,46 @@ function PremiumReport() {
             </div>
           </section>
 
+          {/* Top Strengths & Development Areas */}
+          <section className="insights-section">
+            <div className="insights-grid">
+              <div className="strengths-card">
+                <h3>🌟 Top Strengths</h3>
+                <div className="insights-list">
+                  {reportData.insights.topStrengths.map((strength, index) => (
+                    <div key={index} className="insight-item">
+                      <div className="insight-header">
+                        <span className="insight-icon">{getDimensionIcon(strength.dimension)}</span>
+                        <span className="insight-dimension">{formatDimensionName(strength.dimension)}</span>
+                        <span className="insight-score">{strength.score}%</span>
+                      </div>
+                      <p className="insight-description">{strength.description}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="development-card">
+                <h3>🎯 Development Areas</h3>
+                <div className="insights-list">
+                  {reportData.insights.developmentAreas.map((area, index) => (
+                    <div key={index} className="insight-item">
+                      <div className="insight-header">
+                        <span className="insight-icon">{getDimensionIcon(area.dimension)}</span>
+                        <span className="insight-dimension">{formatDimensionName(area.dimension)}</span>
+                        <span className="insight-score">{area.score}%</span>
+                      </div>
+                      <p className="insight-description">{area.suggestion}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Holland Career Types */}
           <section className="chart-section">
-            <h2>Holland Career Interest Types</h2>
+            <h2>Holland Career Interest Profile</h2>
             <div className="chart-container">
               <ResponsiveContainer width="100%" height={300}>
                 <BarChart data={hollandData}>
@@ -206,11 +322,27 @@ function PremiumReport() {
             </div>
           </section>
 
+          {/* Future Buckets */}
+          <section className="future-buckets-section">
+            <h2>🔮 Future-Ready Career Buckets</h2>
+            <p className="section-description">
+              Based on your dimensional profile, these emerging career areas align with your strengths:
+            </p>
+            <div className="buckets-grid">
+              {reportData.scores.futureBuckets.map((bucket, index) => (
+                <div key={index} className="bucket-card">
+                  <span className="bucket-icon">🚀</span>
+                  <span className="bucket-name">{bucket}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Career Recommendations */}
           <section className="recommendations-section">
-            <h2>Career Recommendations</h2>
+            <h2>💼 Career Recommendations</h2>
             <p className="section-description">
-              Based on your {formatHollandName(reportData.dominantHollandType)} career type, here are careers that align with your interests:
+              Careers that align with your {reportData.scores.archetype.name} archetype and {formatHollandName(reportData.scores.holland.primary)} career type:
             </p>
             <div className="recommendations-grid">
               {reportData.careerRecommendations.map((career, index) => (
@@ -222,41 +354,56 @@ function PremiumReport() {
             </div>
           </section>
 
-          {/* AI Learning Paths */}
-          <section className="ai-paths-section">
-            <h2>AI Learning Paths</h2>
+          {/* Personalized Learning Paths */}
+          <section className="learning-paths-section">
+            <h2>🤖 Personalized AI Learning Paths</h2>
             <p className="section-description">
-              Leverage your {formatIntelligenceName(reportData.dominantIntelligence)} intelligence with these AI-powered skills:
+              Leverage your dimensional strengths with these AI-powered skill development paths:
             </p>
-            <div className="ai-paths-grid">
-              {reportData.aiLearningPaths.map((path, index) => (
-                <div key={index} className="ai-path-card">
-                  <span className="ai-icon">🤖</span>
+            <div className="learning-paths-grid">
+              {reportData.personalizedLearningPaths.map((path, index) => (
+                <div key={index} className="learning-path-card">
+                  <span className="path-icon">🤖</span>
                   <span className="path-name">{path}</span>
                 </div>
               ))}
             </div>
           </section>
 
+          {/* Archetype Traits */}
+          {reportData.scores.archetype.traits && (
+            <section className="archetype-traits-section">
+              <h2>🌟 Your Archetype Traits</h2>
+              <div className="traits-grid">
+                {reportData.scores.archetype.traits.map((trait, index) => (
+                  <div key={index} className="trait-card">
+                    <span className="trait-icon">✨</span>
+                    <span className="trait-text">{trait}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
           {/* Next Steps */}
           <section className="next-steps-section">
-            <h2>Your Next Steps</h2>
+            <h2>🎯 Your Next Steps</h2>
             <div className="steps-grid">
               <div className="step-card">
-                <h4>1. Explore Careers</h4>
-                <p>Research the recommended careers that match your profile and interests.</p>
+                <h4>1. Leverage Strengths</h4>
+                <p>Focus on developing your top dimensional strengths further through targeted practice and learning.</p>
               </div>
               <div className="step-card">
-                <h4>2. Develop Skills</h4>
-                <p>Start learning the AI skills that align with your dominant intelligence.</p>
+                <h4>2. Address Development Areas</h4>
+                <p>Work on the suggested improvements for your development dimensions to create a more balanced profile.</p>
               </div>
               <div className="step-card">
-                <h4>3. Build Portfolio</h4>
-                <p>Create projects that showcase your unique combination of talents.</p>
+                <h4>3. Explore Future Buckets</h4>
+                <p>Research emerging opportunities in your aligned future-ready career buckets.</p>
               </div>
               <div className="step-card">
-                <h4>4. Network</h4>
-                <p>Connect with professionals in your recommended career fields.</p>
+                <h4>4. Start Learning</h4>
+                <p>Begin with your personalized AI learning paths to stay ahead in the evolving job market.</p>
               </div>
             </div>
           </section>

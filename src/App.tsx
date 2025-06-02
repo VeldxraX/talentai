@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider, useAuth } from './contexts/AuthContext'
-import AuthPromptRoute from './components/AuthPromptRoute'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Homepage from './pages/Homepage'
@@ -18,11 +17,11 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/home" element={<Homepage />} />
-            <Route path="/quiz" element={<AuthPromptRoute message="You need to create an account or log in to take the talent test. Would you like to sign up now?"><Quiz /></AuthPromptRoute>} />
+            <Route path="/home" element={<ProtectedRoute><Homepage /></ProtectedRoute>} />
+            <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
             <Route path="/report/free/:resultId" element={<ProtectedRoute><FreeReport /></ProtectedRoute>} />
             <Route path="/report/premium/:resultId" element={<ProtectedRoute><PremiumReport /></ProtectedRoute>} />
-            <Route path="/" element={<Navigate to="/home" replace />} />
+            <Route path="/" element={<Navigate to="/login" replace />} />
           </Routes>
         </div>
       </Router>

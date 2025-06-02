@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './Report.css'
 
 interface FreeReportData {
-  dominantIntelligence: string
-  description: string
+  archetype: {
+    name: string
+    description: string
+    traits?: string[]
+  }
+  primaryStrengths: string[]
+  topDimension: string
   upgradeMessage: string
+  upgradeFeatures: string[]
 }
 
 function FreeReport() {
@@ -21,10 +27,14 @@ function FreeReport() {
       loadFreeReport()
     }
   }, [resultId])
-
   const loadFreeReport = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/report/free/${resultId}`)
+      const token = localStorage.getItem('talentai_token')
+      const response = await axios.get(`http://localhost:5000/api/report/free/${resultId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       setReportData(response.data)
       setLoading(false)
     } catch (error) {
@@ -36,26 +46,31 @@ function FreeReport() {
   const handleUpgrade = () => {
     navigate(`/report/premium/${resultId}`)
   }
-
-  const formatIntelligenceName = (intelligence: string) => {
-    return intelligence
+  const formatDimensionName = (dimension: string) => {
+    return dimension
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
   }
 
-  const getIntelligenceIcon = (intelligence: string) => {
+  const getArchetypeIcon = (archetypeName: string) => {
     const icons: { [key: string]: string } = {
-      bodily_kinesthetic: '🏃‍♂️',
-      logical_mathematical: '🧮',
-      musical: '🎵',
-      interpersonal: '👥',
-      intrapersonal: '🧘‍♀️',
-      spatial: '🎨',
-      linguistic: '📚',
-      naturalistic: '🌿'
+      'The Strategist': '🧠',
+      'The Innovator': '💡',
+      'The Facilitator': '🤝',
+      'The Builder': '🔨',
+      'The Researcher': '🔬',
+      'The Communicator': '💬',
+      'The Analyst': '📊',
+      'The Creator': '🎨',
+      'The Helper': '❤️',
+      'The Maker': '🛠️',
+      'The Organizer': '📋',
+      'The Visionary': '🔮',
+      'The Pioneer': '🚀',
+      'The Balanced Learner': '⚖️'
     }
-    return icons[intelligence] || '🧠'
+    return icons[archetypeName] || '🌟'
   }
 
   if (loading) {
@@ -81,17 +96,31 @@ function FreeReport() {
         <p>Free Report - Limited Preview</p>
       </header>
 
-      <main className="report-main">
-        <div className="free-report-content">
+      <main className="report-main">        <div className="free-report-content">
           <div className="dominant-intelligence-card">
             <div className="intelligence-icon">
-              {getIntelligenceIcon(reportData.dominantIntelligence)}
+              {getArchetypeIcon(reportData.archetype.name)}
             </div>
-            <h2>Your Dominant Intelligence</h2>
-            <h3>{formatIntelligenceName(reportData.dominantIntelligence)}</h3>
+            <h2>Your Primary Archetype</h2>
+            <h3>{reportData.archetype.name}</h3>
             <p className="intelligence-description">
-              {reportData.description}
+              {reportData.archetype.description}
             </p>
+            
+            {reportData.primaryStrengths.length > 0 && (
+              <div className="strengths-preview">
+                <h4>Your Key Strengths:</h4>
+                <ul>
+                  {reportData.primaryStrengths.map((strength, index) => (
+                    <li key={index}>{strength}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            
+            <div className="top-dimension">
+              <p><strong>Top Dimension:</strong> {formatDimensionName(reportData.topDimension)}</p>
+            </div>
           </div>
 
           <div className="upgrade-section">
@@ -104,12 +133,9 @@ function FreeReport() {
               <div className="premium-features">
                 <h4>Get the Premium Report to see:</h4>
                 <ul>
-                  <li>✨ Complete breakdown of all 8 intelligences</li>
-                  <li>📊 Interactive radar chart visualization</li>
-                  <li>🎯 Holland Career Type analysis</li>
-                  <li>💼 Personalized career recommendations</li>
-                  <li>🤖 AI skill learning paths matched to your profile</li>
-                  <li>📄 Downloadable PDF report</li>
+                  {reportData.upgradeFeatures.map((feature, index) => (
+                    <li key={index}>✨ {feature}</li>
+                  ))}
                 </ul>
               </div>
 

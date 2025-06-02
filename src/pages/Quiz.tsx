@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import './Quiz.css'
@@ -6,7 +6,7 @@ import './Quiz.css'
 interface Question {
   id: number
   question: string
-  category: string
+  dimension: string
 }
 
 interface Answer {
@@ -33,10 +33,14 @@ function Quiz() {
   useEffect(() => {
     loadQuestions()
   }, [])
-
   const loadQuestions = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/quiz/questions')
+      const token = localStorage.getItem('talentai_token')
+      const response = await axios.get('http://localhost:5000/api/quiz/questions', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       setQuestions(response.data.questions)
       setLoading(false)
     } catch (error) {
@@ -82,7 +86,6 @@ function Quiz() {
       setCurrentPage(prev => prev - 1)
     }
   }
-
   const handleSubmit = async () => {
     if (answers.length !== questions.length) {
       setError('Please answer all questions before submitting')
@@ -91,8 +94,13 @@ function Quiz() {
 
     setSubmitting(true)
     try {
+      const token = localStorage.getItem('talentai_token')
       const response = await axios.post('http://localhost:5000/api/quiz/submit', {
         answers
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       })
       
       const { resultId } = response.data

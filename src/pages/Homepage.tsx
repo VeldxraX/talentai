@@ -1,64 +1,31 @@
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import './Homepage.css'
 
 function Homepage() {
-  const { user, logout, isAuthenticated } = useAuth()
+  const { user, logout } = useAuth()
   const navigate = useNavigate()
 
   const handleStartQuiz = () => {
-    if (!isAuthenticated) {
-      // Prompt user to sign up/login first
-      const shouldRedirect = window.confirm(
-        'You need to create an account or log in to take the talent test. Would you like to sign up now?'
-      )
-      if (shouldRedirect) {
-        navigate('/register')
-      }
-      return
-    }
     navigate('/quiz')
   }
 
   const handleUpgrade = () => {
-    if (!isAuthenticated) {
-      // Prompt user to sign up/login first
-      const shouldRedirect = window.confirm(
-        'You need to create an account or log in to access the premium report. Would you like to sign up now?'
-      )
-      if (shouldRedirect) {
-        navigate('/register')
-      }
-      return
-    }
     // For now, just start the quiz - in a real app this would handle payment
     alert('Upgrade feature coming soon! For now, take the free test and we\'ll show you both versions.')
     navigate('/quiz')
   }
 
-  const handleLogin = () => {
-    navigate('/login')
-  }
-
-  const handleRegister = () => {
-    navigate('/register')
-  }
-
   return (
-    <div className="homepage-container">      <header className="homepage-header">
+    <div className="homepage-container">
+      <header className="homepage-header">
         <div className="header-content">
           <h1>TalentAI</h1>
-          {isAuthenticated ? (
-            <div className="user-info">
-              <span>Welcome, {user?.name || user?.email}!</span>
-              <button onClick={logout} className="logout-btn">Logout</button>
-            </div>
-          ) : (
-            <div className="auth-buttons">
-              <button onClick={handleLogin} className="login-btn">Log In</button>
-              <button onClick={handleRegister} className="signup-btn">Sign Up</button>
-            </div>
-          )}
+          <div className="user-info">
+            <span>Welcome, {user?.name || user?.email}!</span>
+            <button onClick={logout} className="logout-btn">Logout</button>
+          </div>
         </div>
       </header>
 
