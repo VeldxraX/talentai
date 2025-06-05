@@ -1,7 +1,7 @@
 // Test script to verify the complete TalentAI application flow
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'http://localhost:3001/api';
 
 async function testCompleteFlow() {
     console.log('🚀 Starting TalentAI End-to-End Test...\n');

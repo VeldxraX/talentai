@@ -21,9 +21,8 @@ function UserResults() {
     fetchUserResults()
   }, [])
   const fetchUserResults = async () => {
-    try {
-      const token = localStorage.getItem('talentai_token')
-      const response = await axios.get('http://localhost:5000/api/user/results', {
+    try {      const token = localStorage.getItem('talentai_token')
+      const response = await axios.get('http://localhost:3001/api/user/results', {
         headers: { Authorization: `Bearer ${token}` }
       })
       setResults(response.data.results)

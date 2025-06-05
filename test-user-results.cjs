@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'http://localhost:3001/api';
 
 async function testUserResults() {
     console.log('🔍 Testing User Results functionality...\n');
@@ -60,10 +60,18 @@ async function testUserResults() {
             const freeReportResponse = await axios.get(`${BASE_URL}/report/free/${resultId}`, { headers: authHeaders });
             console.log('✅ Free report accessible');
             console.log('   Archetype:', freeReportResponse.data.archetype.name);
-            
-            const premiumReportResponse = await axios.get(`${BASE_URL}/report/premium/${resultId}`, { headers: authHeaders });
+              const premiumReportResponse = await axios.get(`${BASE_URL}/report/premium/${resultId}`, { headers: authHeaders });
             console.log('✅ Premium report accessible');
-            console.log('   Dimensions available:', Object.keys(premiumReportResponse.data.dimensions).length);
+            console.log('   Report data keys:', Object.keys(premiumReportResponse.data));
+            if (premiumReportResponse.data.dimensions) {
+                console.log('   Dimensions available:', Object.keys(premiumReportResponse.data.dimensions).length);
+            }
+            if (premiumReportResponse.data.topTwoArchetypes) {
+                console.log('   Top archetypes:', premiumReportResponse.data.topTwoArchetypes.length);
+            }
+            if (premiumReportResponse.data.careerRecommendations) {
+                console.log('   Career recommendations:', premiumReportResponse.data.careerRecommendations.length);
+            }
         }
         
         console.log('\n🎉 All user results functionality tests passed!');

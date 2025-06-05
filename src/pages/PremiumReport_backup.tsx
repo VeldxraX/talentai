@@ -103,7 +103,7 @@ function PremiumReport() {
   const loadPremiumReport = async () => {
     try {
       const token = localStorage.getItem('talentai_token')
-      const response = await axios.get(`http://localhost:5000/api/report/premium/${resultId}`, {
+      const response = await axios.get(`http://localhost:3001/api/report/premium/${resultId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

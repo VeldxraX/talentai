@@ -4,7 +4,7 @@ const http = require('http');
 
 const options = {
   hostname: 'localhost',
-  port: 5000,
+  port: 3001,
   path: '/api/quiz/questions',
   method: 'GET',
   headers: {

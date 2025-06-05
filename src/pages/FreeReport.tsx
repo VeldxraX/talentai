@@ -28,9 +28,8 @@ function FreeReport() {
     }
   }, [resultId])
   const loadFreeReport = async () => {
-    try {
-      const token = localStorage.getItem('talentai_token')
-      const response = await axios.get(`http://localhost:5000/api/report/free/${resultId}`, {
+    try {      const token = localStorage.getItem('talentai_token')
+      const response = await axios.get(`http://localhost:3001/api/report/free/${resultId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

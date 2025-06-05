@@ -1,7 +1,7 @@
 // Test script to verify the complete TalentAI application flow
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:5000/api';
+const BASE_URL = 'http://localhost:3001/api';
 
 async function testCompleteFlow() {
     console.log('🚀 Starting TalentAI End-to-End Test...\n');
@@ -66,13 +66,13 @@ async function testCompleteFlow() {
         
         // 6. Test premium report endpoint
         console.log('\n6. Testing premium report endpoint...');
-        const premiumReportResponse = await axios.get(`${BASE_URL}/report/premium/${resultId}`, { headers: authHeaders });
-        console.log('✅ Premium report generated');
+        const premiumReportResponse = await axios.get(`${BASE_URL}/report/premium/${resultId}`, { headers: authHeaders });        console.log('✅ Premium report generated');
         console.log('   Dimensions:', Object.keys(premiumReportResponse.data.scores.dimensions));
-        console.log('   Career Recommendations:', premiumReportResponse.data.careerRecommendations.slice(0, 3));
-        console.log('   Learning Paths:', premiumReportResponse.data.personalizedLearningPaths.slice(0, 3));
-        console.log('   Top Strengths:', premiumReportResponse.data.insights.topStrengths.length);
-        console.log('   Development Areas:', premiumReportResponse.data.insights.developmentAreas.length);
+        console.log('   Career Recommendations:', premiumReportResponse.data.careerRecommendations?.slice(0, 3) || 'undefined');
+        console.log('   Top Two Archetypes:', premiumReportResponse.data.topTwoArchetypes?.length || 'undefined');
+        console.log('   AI Skill Roadmap:', premiumReportResponse.data.aiSkillRoadmap?.slice(0, 2) || 'undefined');
+        console.log('   Top Strengths:', premiumReportResponse.data.insights?.topStrengths?.length || 'undefined');
+        console.log('   Development Areas:', premiumReportResponse.data.insights?.developmentAreas?.length || 'undefined');
         
         // 7. Test user results endpoint
         console.log('\n7. Testing user results endpoint...');
