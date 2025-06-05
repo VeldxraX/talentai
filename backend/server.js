@@ -757,21 +757,31 @@ app.get('/api/report/premium/:resultId', authenticateToken, (req, res) => {
 
             if (!result) {
                 return res.status(404).json({ error: 'Results not found' });
-            }
-
-            const scores = JSON.parse(result.scores);
+            }            const scores = JSON.parse(result.scores);
+            
+            console.log('=== DEBUG: Premium Report Data Processing ===');
+            console.log('User ID:', req.user.userId);
+            console.log('Result ID:', resultId);
+            console.log('Holland Primary:', scores.holland?.primary);
+            console.log('Archetype Name:', scores.archetype?.name);
+            console.log('Dimensions:', Object.keys(scores.dimensions || {}));
             
             // Calculate top two archetypes
             const topTwoArchetypes = getTopTwoArchetypes(scores.dimensions);
+            console.log('Top Two Archetypes Result:', topTwoArchetypes);
             
             // Enhanced career recommendations with detailed structure
             const careerRecommendations = getPersonalizedCareerRecommendations(scores.holland.primary, scores.archetype.name, scores.dimensions);
+            console.log('Career Recommendations Result:', careerRecommendations?.length || 0, 'items');
             
             // Top future buckets with rationales
             const topFutureBuckets = getTopFutureBucketsWithRationales(scores.dimensions);
+            console.log('Top Future Buckets Result:', topFutureBuckets);
             
             // AI skill roadmap with 3-week learning plans
             const aiSkillRoadmap = getAISkillRoadmap(scores.dimensions);
+            console.log('AI Skill Roadmap Result:', aiSkillRoadmap?.length || 0, 'items');
+            console.log('=== END DEBUG ===');
 
             // Get top strengths and development areas
             const sortedDimensions = Object.entries(scores.dimensions)
