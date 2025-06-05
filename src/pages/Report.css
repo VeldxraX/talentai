@@ -476,3 +476,598 @@
     max-width: 300px;
   }
 }
+
+/* Enhanced Premium Report Styles */
+
+/* Back button and PDF download */
+.back-button {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  padding: 12px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-button:hover {
+  background: #5a6fd8;
+  transform: translateY(-52px);
+}
+
+.download-pdf-btn {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  padding: 12px 20px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.download-pdf-btn:hover {
+  background: #218838;
+  transform: translateY(-52px);
+}
+
+/* Main report content */
+.report-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* Section styling */
+.archetypes-section,
+.dimensions-section,
+.holland-section,
+.mbti-section,
+.future-buckets-section,
+.roles-section,
+.roadmap-section,
+.summary-section {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.archetypes-section h2,
+.dimensions-section h2,
+.holland-section h2,
+.mbti-section h2,
+.future-buckets-section h2,
+.roles-section h2,
+.roadmap-section h2,
+.summary-section h2 {
+  color: #333;
+  font-size: 2.2rem;
+  margin-bottom: 30px;
+  font-weight: 700;
+  text-align: center;
+  border-bottom: 3px solid #667eea;
+  padding-bottom: 15px;
+}
+
+/* Archetypes Section */
+.archetypes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.archetype-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 30px;
+  border-left: 5px solid #667eea;
+  transition: transform 0.3s ease;
+}
+
+.archetype-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.archetype-card h3 {
+  color: #667eea;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.archetype-description {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+}
+
+.strengths-weaknesses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+.strengths h4,
+.weaknesses h4 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.strengths h4 {
+  color: #28a745;
+}
+
+.weaknesses h4 {
+  color: #ffc107;
+}
+
+.strengths ul,
+.weaknesses ul {
+  list-style: none;
+  padding: 0;
+}
+
+.strengths li,
+.weaknesses li {
+  padding: 8px 0;
+  color: #666;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #eee;
+}
+
+.strengths li:last-child,
+.weaknesses li:last-child {
+  border-bottom: none;
+}
+
+.archetype-interaction {
+  background: #e9ecef;
+  border-radius: 12px;
+  padding: 25px;
+  border-left: 5px solid #764ba2;
+}
+
+.archetype-interaction h3 {
+  color: #764ba2;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.archetype-interaction p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+/* Holland Profile Section */
+.holland-overview {
+  margin-bottom: 30px;
+}
+
+.holland-code {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  text-align: center;
+  border: 2px solid #667eea;
+}
+
+.holland-code h3 {
+  color: #667eea;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.holland-code p {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* MBTI Section */
+.mbti-overview {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.mbti-overview h3 {
+  color: #667eea;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.mbti-dimensions {
+  display: grid;
+  gap: 25px;
+}
+
+.mbti-dimension {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  border-left: 5px solid #764ba2;
+}
+
+.dimension-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.dimension-header h4 {
+  color: #333;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.preference {
+  background: #764ba2;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.dimension-bar {
+  background: #e9ecef;
+  border-radius: 10px;
+  height: 20px;
+  position: relative;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.dimension-fill {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+  position: relative;
+}
+
+.score-label {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.dimension-explanation {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Future Buckets Section */
+.buckets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 25px;
+}
+
+.bucket-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  border-top: 5px solid #28a745;
+  transition: transform 0.3s ease;
+}
+
+.bucket-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.bucket-card h3 {
+  color: #28a745;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.bucket-score {
+  background: #28a745;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-block;
+  margin-bottom: 15px;
+}
+
+.bucket-card p {
+  color: #666;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* Career Roles Section */
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.role-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  border-left: 5px solid #17a2b8;
+  transition: transform 0.3s ease;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.role-card h3 {
+  color: #17a2b8;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.role-description {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+.role-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.salary {
+  background: #28a745;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.pathway {
+  background: #6c757d;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* AI Skill Roadmap Section */
+.roadmap-grid {
+  display: grid;
+  gap: 40px;
+}
+
+.skill-roadmap {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 30px;
+  border-left: 5px solid #fd7e14;
+}
+
+.skill-roadmap h3 {
+  color: #fd7e14;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.why-it-matters {
+  color: #666;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border-left: 3px solid #fd7e14;
+}
+
+.weekly-plan {
+  margin-bottom: 25px;
+}
+
+.weekly-plan h4 {
+  color: #333;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.week-plan {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 15px;
+  border-left: 3px solid #667eea;
+}
+
+.week-plan h5 {
+  color: #667eea;
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.week-plan ul {
+  list-style: none;
+  padding: 0;
+}
+
+.week-plan li {
+  padding: 6px 0;
+  color: #666;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  padding-left: 20px;
+}
+
+.week-plan li:before {
+  content: "✓";
+  color: #28a745;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.week-plan li:last-child {
+  border-bottom: none;
+}
+
+.resources h4 {
+  color: #333;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.resources ul {
+  list-style: none;
+  padding: 0;
+}
+
+.resources li {
+  margin-bottom: 10px;
+}
+
+.resources a {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.resources a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* Summary Section */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+}
+
+.summary-card {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 25px;
+  border-top: 5px solid #6f42c1;
+}
+
+.summary-card h3 {
+  color: #6f42c1;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.summary-card ol,
+.summary-card ul {
+  padding-left: 20px;
+}
+
+.summary-card li {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .report-content {
+    padding: 20px 15px;
+  }
+  
+  .archetypes-section,
+  .dimensions-section,
+  .holland-section,
+  .mbti-section,
+  .future-buckets-section,
+  .roles-section,
+  .roadmap-section,
+  .summary-section {
+    padding: 25px 20px;
+    margin-bottom: 25px;
+  }
+  
+  .archetypes-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .strengths-weaknesses {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .roles-grid,
+  .buckets-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .back-button,
+  .download-pdf-btn {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    transform: none;
+    margin: 10px;
+  }
+  
+  .report-header {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .report-header h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+}

@@ -6,9 +6,12 @@ import './Homepage.css'
 function Homepage() {
   const { user, logout } = useAuth()
   const navigate = useNavigate()
-
   const handleStartQuiz = () => {
     navigate('/quiz')
+  }
+
+  const handleViewResults = () => {
+    navigate('/results')
   }
 
   const handleUpgrade = () => {
@@ -21,20 +24,19 @@ function Homepage() {
     <div className="homepage-container">
       <header className="homepage-header">
         <div className="header-content">
-          <h1>TalentAI</h1>
-          <div className="user-info">
+          <h1>TalentAI</h1>          <div className="user-info">
             <span>Welcome, {user?.name || user?.email}!</span>
+            <button onClick={handleViewResults} className="view-results-btn">My Results</button>
             <button onClick={logout} className="logout-btn">Logout</button>
           </div>
         </div>
       </header>
 
       <main className="homepage-main">
-        <div className="hero-section">
-          <h2>Discover Your Unique Talents</h2>
+        <div className="hero-section">          <h2>Discover Your Unique Talents</h2>
           <p className="hero-subtitle">
-            Unlock your potential with science-backed assessments based on Gardner's Multiple Intelligences 
-            and Holland's Career Interest Types. Get personalized career guidance and AI learning paths.
+            Unlock your potential with our comprehensive 45-question dimensional assessment. 
+            Explore your 8 internal dimensions and get personalized career guidance with AI learning paths.
           </p>
         </div>
 
@@ -44,12 +46,11 @@ function Homepage() {
               <h3>Free Talent Test</h3>
               <span className="price">Free</span>
             </div>
-            <div className="card-content">
-              <ul className="features-list">
-                <li>✓ 36 science-backed questions</li>
-                <li>✓ Discover your dominant intelligence</li>
-                <li>✓ Basic personality insights</li>
-                <li>✓ Get started in 10 minutes</li>
+            <div className="card-content">              <ul className="features-list">
+                <li>✓ 45 science-backed questions</li>
+                <li>✓ Discover your dominant archetype</li>
+                <li>✓ Basic dimensional insights</li>
+                <li>✓ Get started in 15 minutes</li>
               </ul>
               <button onClick={handleStartQuiz} className="cta-button primary">
                 Try Free Test
@@ -63,15 +64,15 @@ function Homepage() {
               <span className="price">$19.99</span>
               <span className="badge">Most Popular</span>
             </div>
-            <div className="card-content">
-              <ul className="features-list">
+            <div className="card-content">              <ul className="features-list">
                 <li>✓ Everything in Free Test</li>
-                <li>✓ Complete intelligence breakdown</li>
-                <li>✓ Holland career type analysis</li>
-                <li>✓ Personalized career recommendations</li>
+                <li>✓ Complete 8-dimensional analysis</li>
+                <li>✓ Holland career type breakdown</li>
+                <li>✓ MBTI personality teaser</li>
+                <li>✓ Future career buckets</li>
                 <li>✓ AI skill learning paths</li>
                 <li>✓ Detailed radar chart visualization</li>
-                <li>✓ Printable PDF report</li>
+                <li>✓ Personalized career recommendations</li>
               </ul>
               <button onClick={handleUpgrade} className="cta-button premium">
                 Get Full Report
@@ -82,22 +83,21 @@ function Homepage() {
 
         <div className="info-section">
           <h3>Why TalentAI?</h3>
-          <div className="info-grid">
-            <div className="info-item">
+          <div className="info-grid">            <div className="info-item">
               <h4>🧠 Science-Based</h4>
-              <p>Built on proven psychological theories by Howard Gardner and John Holland</p>
+              <p>Built on advanced dimensional psychology and career assessment frameworks</p>
             </div>
             <div className="info-item">
               <h4>🎯 Personalized</h4>
-              <p>Get recommendations tailored to your unique intelligence profile</p>
+              <p>Get recommendations tailored to your unique 8-dimensional profile</p>
             </div>
             <div className="info-item">
               <h4>🚀 Future-Ready</h4>
-              <p>Learn which AI skills match your natural talents and interests</p>
+              <p>Discover which emerging career paths align with your natural talents</p>
             </div>
             <div className="info-item">
               <h4>⚡ Quick & Easy</h4>
-              <p>Complete assessment in just 10-15 minutes</p>
+              <p>Complete assessment in just 15-20 minutes</p>
             </div>
           </div>
         </div>

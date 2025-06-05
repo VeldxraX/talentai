@@ -7,6 +7,7 @@ import Homepage from './pages/Homepage'
 import Quiz from './pages/Quiz'
 import FreeReport from './pages/FreeReport'
 import PremiumReport from './pages/PremiumReport'
+import UserResults from './pages/UserResults'
 import './App.css'
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/home" element={<ProtectedRoute><Homepage /></ProtectedRoute>} />
             <Route path="/quiz" element={<ProtectedRoute><Quiz /></ProtectedRoute>} />
+            <Route path="/results" element={<ProtectedRoute><UserResults /></ProtectedRoute>} />
             <Route path="/report/free/:resultId" element={<ProtectedRoute><FreeReport /></ProtectedRoute>} />
             <Route path="/report/premium/:resultId" element={<ProtectedRoute><PremiumReport /></ProtectedRoute>} />
             <Route path="/" element={<Navigate to="/login" replace />} />

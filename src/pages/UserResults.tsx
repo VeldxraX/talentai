@@ -44,19 +44,9 @@ function UserResults() {
       minute: '2-digit'
     })
   }
-
-  const getIntelligenceDisplayName = (intelligence: string) => {
-    const names: { [key: string]: string } = {
-      'bodily_kinesthetic': 'Bodily-Kinesthetic',
-      'logical_mathematical': 'Logical-Mathematical',
-      'musical': 'Musical',
-      'interpersonal': 'Interpersonal',
-      'intrapersonal': 'Intrapersonal',
-      'spatial': 'Spatial',
-      'linguistic': 'Linguistic',
-      'naturalistic': 'Naturalistic'
-    }
-    return names[intelligence] || intelligence
+  const getArchetypeDisplayName = (archetype: string) => {
+    // Convert archetype names to display format
+    return archetype.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
   }
 
   const getHollandDisplayName = (holland: string) => {
@@ -93,9 +83,8 @@ function UserResults() {
         <button onClick={() => navigate('/home')} className="back-button">
           ← Back to Home
         </button>
-        <h1>Your Results</h1>
-        <button onClick={handleTakeNewQuiz} className="new-quiz-button">
-          Take New Quiz
+        <h1>Your Results</h1>        <button onClick={handleTakeNewQuiz} className="new-quiz-button">
+          Take New Assessment
         </button>
       </header>
 
@@ -104,30 +93,26 @@ function UserResults() {
           <div className="error-message">
             {error}
           </div>
-        )}
-
-        {results.length === 0 ? (
+        )}        {results.length === 0 ? (
           <div className="no-results">
             <h2>No Results Yet</h2>
-            <p>You haven't taken any assessments yet. Take your first quiz to discover your talents!</p>
+            <p>You haven't taken any assessments yet. Take your first dimensional assessment to discover your talents!</p>
             <button onClick={handleTakeNewQuiz} className="cta-button">
-              Take Your First Quiz
+              Take Your First Assessment
             </button>
           </div>
         ) : (
           <div className="results-grid">
-            {results.map((result) => (
-              <div key={result.id} className="result-card">
+            {results.map((result) => (              <div key={result.id} className="result-card">
                 <div className="result-header">
-                  <h3>Assessment Results</h3>
+                  <h3>Dimensional Assessment</h3>
                   <span className="result-date">{formatDate(result.completedAt)}</span>
                 </div>
-                
-                <div className="result-content">
+                  <div className="result-content">
                   <div className="intelligence-result">
-                    <h4>Dominant Intelligence</h4>
+                    <h4>Primary Archetype</h4>
                     <p className="intelligence-name">
-                      {getIntelligenceDisplayName(result.dominantIntelligence)}
+                      {getArchetypeDisplayName(result.dominantIntelligence)}
                     </p>
                   </div>
                   
